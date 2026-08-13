@@ -1,0 +1,118 @@
+<svg viewBox="0 0 900 640" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <style>
+    .title { font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .subtitle { font-size: 13px; fill: #555; }
+    .section-title { font-size: 15px; font-weight: 700; fill: #1a1a2e; }
+    .label { font-size: 12px; fill: #222; }
+    .label-b { font-size: 12px; font-weight: 700; fill: #1a1a2e; }
+    .small { font-size: 10.5px; fill: #555; }
+    .state-box { fill: #ffffff; stroke: #2c3e6b; stroke-width: 1.6; rx: 8; }
+    .state-text { font-size: 12.5px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+    .state-sub { font-size: 9.5px; fill: #555; text-anchor: middle; }
+    .arrow { stroke: #2c3e6b; stroke-width: 1.6; fill: none; marker-end: url(#arrow-head); }
+    .btn-circle { fill: #eef1fb; stroke: #2c3e6b; stroke-width: 1.4; }
+    .btn-label { font-size: 11px; font-weight: 700; fill: #1a1a2e; text-anchor: middle; }
+  </style>
+  <defs>
+    <marker id="arrow-head" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#2c3e6b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="900" height="640" fill="#fafafa"/>
+  <text x="30" y="36" class="title">IC Card Refill Machine — Operation Manual</text>
+  <text x="30" y="56" class="subtitle">Basys3 FPGA · four-mode transaction flow</text>
+
+  <!-- ============ CONTROLS SECTION ============ -->
+  <text x="30" y="92" class="section-title">Controls</text>
+
+  <!-- Board outline -->
+  <rect x="30" y="108" width="380" height="220" rx="10" fill="#ffffff" stroke="#999" stroke-width="1.4"/>
+  <text x="220" y="128" text-anchor="middle" class="small">Basys3 Board</text>
+
+  <!-- BTNC (center) -->
+  <circle cx="220" cy="200" r="26" class="btn-circle"/>
+  <text x="220" y="204" class="btn-label">C</text>
+  <!-- BTNU -->
+  <circle cx="220" cy="150" r="20" class="btn-circle"/>
+  <text x="220" y="154" class="btn-label">U</text>
+  <!-- BTND -->
+  <circle cx="220" cy="250" r="20" class="btn-circle"/>
+  <text x="220" y="254" class="btn-label">D</text>
+  <!-- BTNL -->
+  <circle cx="168" cy="200" r="20" class="btn-circle"/>
+  <text x="168" y="204" class="btn-label">L</text>
+  <!-- BTNR -->
+  <circle cx="272" cy="200" r="20" class="btn-circle"/>
+  <text x="272" y="204" class="btn-label">R</text>
+
+  <!-- SW0 -->
+  <rect x="60" y="290" width="46" height="22" rx="4" fill="#eef1fb" stroke="#2c3e6b" stroke-width="1.4"/>
+  <text x="83" y="305" class="btn-label" font-size="10">SW0</text>
+
+  <!-- reset -->
+  <rect x="330" y="290" width="60" height="22" rx="4" fill="#eef1fb" stroke="#2c3e6b" stroke-width="1.4"/>
+  <text x="360" y="305" class="btn-label" font-size="10">RESET</text>
+
+  <!-- Legend -->
+  <g transform="translate(450,108)">
+    <text x="0" y="0" class="label-b">BTNC — Confirm / Advance</text>
+    <text x="0" y="18" class="small">Advances phase or mode. Edge-detected, debounced.</text>
+
+    <text x="0" y="44" class="label-b">BTNU / BTND — Digit Up / Down</text>
+    <text x="0" y="62" class="small">Adjusts the selected digit in Balance/Custom Refill entry.</text>
+    <text x="0" y="76" class="small">In Refill preset screen: BTNU = 5000, BTND = Custom entry.</text>
+
+    <text x="0" y="102" class="label-b">BTNL / BTNR — Cursor / Preset</text>
+    <text x="0" y="120" class="small">Moves the entry cursor left/right between digits.</text>
+    <text x="0" y="134" class="small">In Refill preset screen: BTNL = 2000, BTNR = 1000.</text>
+
+    <text x="0" y="160" class="label-b">SW0 — Pause</text>
+    <text x="0" y="178" class="small">Freezes banners, cursor blink, and mode advance while held.</text>
+
+    <text x="0" y="204" class="label-b">RESET</text>
+    <text x="0" y="222" class="small">Returns immediately to OFF, highest priority over all inputs.</text>
+  </g>
+
+  <!-- ============ STATE FLOW SECTION ============ -->
+  <text x="30" y="368" class="section-title">Transaction Flow</text>
+  <text x="30" y="386" class="small">Each state has 2+ display phases (banner → content). BTNC advances to the last phase, then to the next mode.</text>
+
+  <!-- OFF -->
+  <rect x="30" y="410" width="150" height="70" class="state-box"/>
+  <text x="105" y="440" class="state-text">OFF</text>
+  <text x="105" y="458" class="state-sub">static "OFF" display</text>
+
+  <!-- BALANCE -->
+  <rect x="230" y="410" width="170" height="70" class="state-box"/>
+  <text x="315" y="435" class="state-text">Input Balance</text>
+  <text x="315" y="452" class="state-sub">banner → enter balance</text>
+  <text x="315" y="466" class="state-sub">(5-digit BCD, capped 20000)</text>
+
+  <!-- REFILL -->
+  <rect x="450" y="410" width="170" height="70" class="state-box"/>
+  <text x="535" y="435" class="state-text">Input Refill</text>
+  <text x="535" y="452" class="state-sub">banner → preset or custom</text>
+  <text x="535" y="466" class="state-sub">1000 / 2000 / 5000 / custom</text>
+
+  <!-- RESULT -->
+  <rect x="670" y="410" width="200" height="70" class="state-box"/>
+  <text x="770" y="435" class="state-text">Display Result</text>
+  <text x="770" y="452" class="state-sub">total → change → "ARIGATO"</text>
+  <text x="770" y="466" class="state-sub">5 rotating phases</text>
+
+  <!-- arrows -->
+  <path d="M180,445 L228,445" class="arrow"/>
+  <path d="M400,445 L448,445" class="arrow"/>
+  <path d="M620,445 L668,445" class="arrow"/>
+
+  <!-- loop back to OFF -->
+  <path d="M770,480 C770,530 105,530 105,482" class="arrow"/>
+  <text x="437" y="546" text-anchor="middle" class="small">BTNC on final "ARIGATO" phase returns to OFF</text>
+
+  <text x="437" y="400" text-anchor="middle" class="small" font-weight="700">btnc (each state's final phase)</text>
+
+  <!-- ============ FOOTER NOTE ============ -->
+  <text x="30" y="586" class="small">LED indicator is one-hot per mode: OFF=0001, Balance=0010, Refill=0100, Result=1000.</text>
+  <text x="30" y="602" class="small">Pause (SW0) freezes rotation/blink and blocks mode/phase advance until released; releasing resumes exactly where it stopped.</text>
+</svg>
