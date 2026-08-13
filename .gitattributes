@@ -1,1 +1,5 @@
+# Force GitHub to recognize all .v files strictly as Verilog
+*.v linguist-language=Verilog
+
+# Hide the .xdc file from the language statistics entirely
 *.xdc linguist-vendored
